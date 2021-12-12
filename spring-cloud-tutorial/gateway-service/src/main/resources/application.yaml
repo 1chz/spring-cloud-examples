@@ -1,0 +1,42 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+
+  cloud:
+    gateway:
+      default-filters:
+        - name: GlobalCustomFilter
+          args:
+            baseMessage: Spring Cloud Gateway GlobalCustomFilter`s base message
+            preLogger: true
+            postLogger: true
+
+      routes:
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/users/**
+          filters:
+            - name: CustomFilter
+            - name: LoggingFilter
+              args:
+                baseMessage: This is LoggingFilter
+                preLogger: true
+                postLogger: true
+
+        - id: catalogs-service
+          uri: lb://CATALOG-SERVICE
+          predicates:
+            - Path=/catalogs/**
+          filters:
+            - name: CustomFilter
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:38080/eureka
