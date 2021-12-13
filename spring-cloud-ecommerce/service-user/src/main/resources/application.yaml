@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: service-user
+    name: SERVICE-USER
   h2:
     console:
       enabled: true
@@ -21,8 +21,6 @@ spring:
       ddl-auto: create
 
 eureka:
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
     register-with-eureka: true
     fetch-registry: true
