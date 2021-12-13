@@ -1,7 +1,7 @@
 package io.github.shriohoo.ecommerce.user.adapter.web;
 
-import io.github.shriohoo.ecommerce.user.adapter.service.UserCrudService;
 import io.github.shriohoo.ecommerce.user.domain.User;
+import io.github.shriohoo.ecommerce.user.service.UserCrudService;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -53,7 +53,7 @@ public class UserController {
         String password;
 
         public User toUser() {
-            return User.create(email, username, password, null);
+            return User.create(email, username, password);
         }
 
     }
@@ -70,6 +70,5 @@ public class UserController {
         }
 
     }
-
 
 }

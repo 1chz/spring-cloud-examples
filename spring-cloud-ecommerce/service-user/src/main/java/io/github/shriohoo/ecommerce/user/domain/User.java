@@ -9,19 +9,17 @@ public class User {
     private String email;
     private String username;
     private String password;
-    private String encryptedPassword;
     private final LocalDateTime createdAt;
 
-    private User(String email, String username, String password, String encryptedPassword) {
+    private User(String email, String username, String password) {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.encryptedPassword = encryptedPassword;
         this.createdAt = LocalDateTime.now();
     }
 
-    public static User create(String email, String username, String password, String encryptedPassword) {
-        return new User(email, username, password, encryptedPassword);
+    public static User create(String email, String username, String password) {
+        return new User(email, username, password);
     }
 
 }

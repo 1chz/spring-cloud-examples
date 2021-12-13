@@ -1,4 +1,4 @@
-package io.github.shriohoo.ecommerce.user.adapter.service;
+package io.github.shriohoo.ecommerce.user.service;
 
 import io.github.shriohoo.ecommerce.user.adapter.persistence.UserCurdRepository;
 import io.github.shriohoo.ecommerce.user.adapter.persistence.UserEntity;

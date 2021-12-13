@@ -4,6 +4,7 @@ import io.github.shriohoo.ecommerce.user.domain.User;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -11,10 +12,13 @@ import org.springframework.stereotype.Repository;
 public class UserCurdRepositoryImpl implements UserCurdRepository {
 
     private final UserCrudJpaRepository jpaRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserEntity save(User user) {
-        return jpaRepository.save(UserEntity.convert(user));
+        UserEntity userEntity = UserEntity.convert(user);
+        userEntity.encryptPassword(passwordEncoder);
+        return jpaRepository.save(userEntity);
     }
 
     @Override
