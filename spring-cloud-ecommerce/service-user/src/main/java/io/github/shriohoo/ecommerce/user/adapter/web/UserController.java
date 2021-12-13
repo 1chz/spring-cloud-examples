@@ -1,5 +1,7 @@
 package io.github.shriohoo.ecommerce.user.adapter.web;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import io.github.shriohoo.ecommerce.user.domain.User;
 import io.github.shriohoo.ecommerce.user.service.UserCrudService;
 import java.time.LocalDateTime;
@@ -58,6 +60,7 @@ public class UserController {
 
     }
 
+    @JsonInclude(Include.NON_NULL)
     @Value(staticConstructor = "of")
     public static class ResponseUser {
 
