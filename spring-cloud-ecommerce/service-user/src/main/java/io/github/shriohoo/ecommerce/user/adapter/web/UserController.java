@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import io.github.shriohoo.ecommerce.user.domain.User;
 import io.github.shriohoo.ecommerce.user.service.UserCrudService;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,6 +16,8 @@ import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +29,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserCrudService userCrudService;
+
+    @GetMapping
+    public ResponseEntity<List<ResponseUser>> findAll() {
+        return ResponseEntity.ok(
+            userCrudService.findAllUser()
+                .stream()
+                .map(ResponseUser::convert)
+                .collect(Collectors.toUnmodifiableList())
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseUser> find(@PathVariable Long id) {
+        return ResponseEntity.ok(ResponseUser.convert(userCrudService.findUser(id)));
+    }
 
     @PostMapping
     public ResponseEntity<ResponseUser> create(@RequestBody RequestUser requestUser) {
@@ -67,10 +87,23 @@ public class UserController {
         String email;
         String username;
         LocalDateTime createdAt;
+        List<ResponseOrder> orders;
 
         public static ResponseUser convert(User user) {
-            return ResponseUser.of(user.getEmail(), user.getUsername(), user.getCreatedAt());
+            return ResponseUser.of(user.getEmail(), user.getUsername(), user.getCreatedAt(), new ArrayList<>());
         }
+
+    }
+
+    @Value
+    public static class ResponseOrder {
+
+        String productId;
+        int quantity;
+        int unitPrice;
+        int totalPrice;
+        LocalDateTime createdAt;
+        String orderId;
 
     }
 

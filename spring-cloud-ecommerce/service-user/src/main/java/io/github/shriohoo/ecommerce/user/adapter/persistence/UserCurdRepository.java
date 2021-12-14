@@ -7,6 +7,8 @@ public interface UserCurdRepository {
 
     UserEntity save(User user);
 
+    UserEntity findById(Long id);
+
     UserEntity findByUsername(String username);
 
     List<UserEntity> findAll();

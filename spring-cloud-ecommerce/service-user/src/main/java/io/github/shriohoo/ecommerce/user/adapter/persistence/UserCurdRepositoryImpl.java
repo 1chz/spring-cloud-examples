@@ -22,6 +22,12 @@ public class UserCurdRepositoryImpl implements UserCurdRepository {
     }
 
     @Override
+    public UserEntity findById(Long id) {
+        return jpaRepository.findById(id)
+            .orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
     public UserEntity findByUsername(String username) {
         return jpaRepository.findByUsername(username)
             .orElseThrow(NoSuchElementException::new);
