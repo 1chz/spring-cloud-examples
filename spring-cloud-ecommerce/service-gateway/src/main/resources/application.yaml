@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: SERVICE-GATEWAY
+
+  cloud:
+    gateway:
+      routes:
+        - id: service-user
+          uri: lb://SERVICE-USER
+          predicates:
+            - Path=/users/**
+
+        - id: service-catalog
+          uri: lb://SERVICE-CATALOG
+          predicates:
+            - Path=/catalogs/**
+
+        - id: service-order
+          uri: lb://SERVICE-ORDER
+          predicates:
+            - Path=/orders/**
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
