@@ -14,11 +14,12 @@ spring:
       username: sa
       password:
   jpa:
+    defer-datasource-initialization: true
     properties:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
 
 eureka:
   client:

@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
@@ -32,7 +33,8 @@ public class UserEntity implements Serializable {
     private String username;
     private String password;
 
-    @Column(updatable = false)
+    @Column(nullable = false, updatable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
     @Builder
