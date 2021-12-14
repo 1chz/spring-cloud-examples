@@ -5,6 +5,6 @@ import java.util.List;
 
 public interface CatalogService {
 
-    List<Catalog> findAllCatalog();
+    List<Catalog> findAll();
 
 }

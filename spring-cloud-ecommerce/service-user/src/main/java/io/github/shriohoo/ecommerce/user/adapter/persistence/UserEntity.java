@@ -54,12 +54,12 @@ public class UserEntity implements Serializable {
             .build();
     }
 
-    public void encryptPassword(PasswordEncoder passwordEncoder) {
-        this.password = passwordEncoder.encode(this.password);
-    }
-
     public User toUser() {
         return User.create(this.email, this.username, null);
+    }
+
+    public void encryptPassword(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
     }
 
 }

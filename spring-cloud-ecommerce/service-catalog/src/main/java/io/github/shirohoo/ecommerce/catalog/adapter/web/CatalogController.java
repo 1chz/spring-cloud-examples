@@ -24,7 +24,7 @@ public class CatalogController {
     @GetMapping
     public ResponseEntity<List<ResponseCatalog>> findAll() {
         return ResponseEntity.ok(
-            catalogService.findAllCatalog()
+            catalogService.findAll()
                 .stream()
                 .map(ResponseCatalog::convert)
                 .collect(Collectors.toUnmodifiableList())

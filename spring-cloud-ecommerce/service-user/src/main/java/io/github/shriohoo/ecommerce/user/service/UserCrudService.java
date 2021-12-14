@@ -5,12 +5,12 @@ import java.util.List;
 
 public interface UserCrudService {
 
-    User createUser(User user);
+    User save(User user);
 
-    List<User> findAllUser();
+    List<User> findAll();
 
-    User findUser(Long id);
+    User findById(Long id);
 
-    void deleteUser(User user);
+    void delete(User user);
 
 }

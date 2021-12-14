@@ -13,7 +13,7 @@ public class CatalogServiceImpl implements CatalogService {
     private final CatalogCrudRepository catalogCrudRepository;
 
     @Override
-    public List<Catalog> findAllCatalog() {
+    public List<Catalog> findAll() {
         return catalogCrudRepository.findAll();
     }
 

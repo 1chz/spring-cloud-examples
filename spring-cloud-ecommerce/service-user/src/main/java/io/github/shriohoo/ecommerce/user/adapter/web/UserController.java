@@ -33,7 +33,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<ResponseUser>> findAll() {
         return ResponseEntity.ok(
-            userCrudService.findAllUser()
+            userCrudService.findAll()
                 .stream()
                 .map(ResponseUser::convert)
                 .collect(Collectors.toUnmodifiableList())
@@ -42,19 +42,19 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseUser> find(@PathVariable Long id) {
-        return ResponseEntity.ok(ResponseUser.convert(userCrudService.findUser(id)));
+        return ResponseEntity.ok(ResponseUser.convert(userCrudService.findById(id)));
     }
 
     @PostMapping
     public ResponseEntity<ResponseUser> create(@RequestBody RequestUser requestUser) {
-        User user = userCrudService.createUser(requestUser.toUser());
+        User user = userCrudService.save(requestUser.toUser());
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ResponseUser.convert(user));
     }
 
     @DeleteMapping
     public ResponseEntity<HttpStatus> delete(@RequestBody RequestUser requestUser) {
-        userCrudService.deleteUser(requestUser.toUser());
+        userCrudService.delete(requestUser.toUser());
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

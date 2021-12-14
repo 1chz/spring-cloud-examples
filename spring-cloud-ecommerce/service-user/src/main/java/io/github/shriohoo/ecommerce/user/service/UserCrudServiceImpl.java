@@ -15,13 +15,13 @@ public class UserCrudServiceImpl implements UserCrudService {
     private final UserCurdRepository userCurdRepository;
 
     @Override
-    public User createUser(User user) {
+    public User save(User user) {
         UserEntity savedUser = userCurdRepository.save(user);
         return savedUser.toUser();
     }
 
     @Override
-    public List<User> findAllUser() {
+    public List<User> findAll() {
         return userCurdRepository.findAll()
             .stream()
             .map(UserEntity::toUser)
@@ -29,13 +29,13 @@ public class UserCrudServiceImpl implements UserCrudService {
     }
 
     @Override
-    public User findUser(Long id) {
+    public User findById(Long id) {
         UserEntity findUser = userCurdRepository.findById(id);
         return findUser.toUser();
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void delete(User user) {
         userCurdRepository.delete(user);
     }
 
