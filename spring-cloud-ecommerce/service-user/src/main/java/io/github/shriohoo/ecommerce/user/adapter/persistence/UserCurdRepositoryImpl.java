@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class UserCurdRepositoryImpl implements UserCurdRepository {
 
-    private final UserCrudJpaRepository jpaRepository;
+    private final UserJpaRepository jpaRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
