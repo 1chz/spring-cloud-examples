@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
@@ -48,8 +49,9 @@ public class UserController {
     @PostMapping
     public ResponseEntity<ResponseUser> create(@RequestBody RequestUser requestUser) {
         User user = userCrudService.save(requestUser.toUser());
+        ResponseUser responseUser = ResponseUser.convert(user);
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(ResponseUser.convert(user));
+            .body(responseUser);
     }
 
     @DeleteMapping
@@ -75,7 +77,11 @@ public class UserController {
         String password;
 
         public User toUser() {
-            return User.create(email, username, password);
+            return User.builder()
+                .email(email)
+                .username(username)
+                .password(password)
+                .build();
         }
 
     }
@@ -89,19 +95,33 @@ public class UserController {
         LocalDateTime createdAt;
         List<ResponseOrder> orders;
 
+        @Builder
+        private ResponseUser(String email, String username, LocalDateTime createdAt, List<ResponseOrder> orders) {
+            this.email = email;
+            this.username = username;
+            this.createdAt = createdAt;
+            this.orders = orders;
+        }
+
         public static ResponseUser convert(User user) {
-            return ResponseUser.of(user.getEmail(), user.getUsername(), user.getCreatedAt(), new ArrayList<>());
+            return ResponseUser.builder()
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .createdAt(user.getCreatedAt())
+                .orders(new ArrayList<>())
+                .build();
         }
 
     }
 
-    @Value
+    @JsonInclude(Include.NON_NULL)
+    @Value(staticConstructor = "of")
     public static class ResponseOrder {
 
         String productId;
-        int quantity;
-        int unitPrice;
-        int totalPrice;
+        Integer quantity;
+        Integer unitPrice;
+        Integer totalPrice;
         LocalDateTime createdAt;
         String orderId;
 

@@ -12,7 +12,7 @@ public class Catalog implements Serializable {
     private String productName;
     private Integer unitPrice;
     private Integer stock;
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
     @Builder
     private Catalog(String productId, String productName, Integer unitPrice, Integer stock, LocalDateTime createdAt) {

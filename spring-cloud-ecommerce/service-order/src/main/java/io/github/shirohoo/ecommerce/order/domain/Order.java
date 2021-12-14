@@ -1,5 +1,7 @@
 package io.github.shirohoo.ecommerce.order.domain;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -7,20 +9,28 @@ import lombok.Getter;
 public class Order {
 
     private String productId;
-    private int quantity;
-    private long unitPrice;
-    private long totalPrice;
+    private final LocalDateTime createdAt;
+    private Integer quantity;
+    private Long unitPrice;
     private String username;
     private String orderId;
+    private Long totalPrice;
 
     @Builder
-    private Order(String productId, int quantity, long unitPrice, long totalPrice, String username, String orderId) {
+    private Order(String productId, Integer quantity, Long unitPrice, Long totalPrice, String username, String orderId, LocalDateTime createdAt) {
         this.productId = productId;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
         this.totalPrice = totalPrice;
         this.username = username;
-        this.orderId = orderId;
+
+        if (orderId == null) {
+            this.orderId = UUID.randomUUID().toString();
+        } else {
+            this.orderId = orderId;
+        }
+
+        this.createdAt = createdAt;
     }
 
 }

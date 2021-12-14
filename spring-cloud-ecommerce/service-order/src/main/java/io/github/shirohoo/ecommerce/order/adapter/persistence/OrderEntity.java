@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,11 +14,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
 @Table(name = "ORDERS")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderEntity implements Serializable {
 
@@ -28,11 +31,14 @@ public class OrderEntity implements Serializable {
     @Column(nullable = false, unique = true)
     private String productId;
 
-    private int quantity;
+    @Column(nullable = false)
+    private Integer quantity;
 
-    private long unitPrice;
+    @Column(nullable = false)
+    private Long unitPrice;
 
-    private long totalPrice;
+    @Column(nullable = false)
+    private Long totalPrice;
 
     @Column(nullable = false)
     private String username;
@@ -40,19 +46,18 @@ public class OrderEntity implements Serializable {
     @Column(nullable = false, unique = true)
     private String orderId;
 
-    @Column(nullable = false, updatable = false)
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @Builder
-    private OrderEntity(String productId, int quantity, long unitPrice, long totalPrice, String username, String orderId, LocalDateTime createdAt) {
+    private OrderEntity(String productId, Integer quantity, Long unitPrice, Long totalPrice, String username, String orderId) {
         this.productId = productId;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
         this.totalPrice = totalPrice;
         this.username = username;
         this.orderId = orderId;
-        this.createdAt = createdAt;
     }
 
     public static OrderEntity convert(Order order) {
@@ -74,6 +79,7 @@ public class OrderEntity implements Serializable {
             .totalPrice(totalPrice)
             .username(username)
             .orderId(orderId)
+            .createdAt(createdAt)
             .build();
     }
 

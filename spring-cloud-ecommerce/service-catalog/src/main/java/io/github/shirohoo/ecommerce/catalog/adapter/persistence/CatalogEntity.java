@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,11 +13,13 @@ import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
 @Table(name = "CATALOG")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CatalogEntity implements Serializable {
 
@@ -30,12 +33,14 @@ public class CatalogEntity implements Serializable {
     @Column(nullable = false)
     private String productName;
 
-    private int stock;
+    @Column(nullable = false)
+    private Integer stock;
 
-    private int unitPrice;
+    @Column(nullable = false)
+    private Integer unitPrice;
 
-    @Column(nullable = false, updatable = false)
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     public Catalog toCatalog() {

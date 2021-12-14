@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,12 +14,14 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Getter
 @Table(name = "USER")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity implements Serializable {
 
@@ -31,18 +34,18 @@ public class UserEntity implements Serializable {
 
     @Column(unique = true)
     private String username;
+
     private String password;
 
-    @Column(nullable = false, updatable = false)
-    @ColumnDefault("CURRENT_TIMESTAMP")
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @Builder
-    private UserEntity(String email, String username, String password, LocalDateTime createdAt) {
+    private UserEntity(String email, String username, String password) {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.createdAt = createdAt;
     }
 
     public static UserEntity convert(User user) {
@@ -50,12 +53,15 @@ public class UserEntity implements Serializable {
             .email(user.getEmail())
             .username(user.getUsername())
             .password(user.getPassword())
-            .createdAt(user.getCreatedAt())
             .build();
     }
 
     public User toUser() {
-        return User.create(this.email, this.username, null);
+        return User.builder()
+            .email(email)
+            .username(username)
+            .createdAt(createdAt)
+            .build();
     }
 
     public void encryptPassword(PasswordEncoder passwordEncoder) {

@@ -1,6 +1,7 @@
 package io.github.shriohoo.ecommerce.user.domain;
 
 import java.time.LocalDateTime;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -11,15 +12,12 @@ public class User {
     private String password;
     private final LocalDateTime createdAt;
 
-    private User(String email, String username, String password) {
+    @Builder
+    private User(String email, String username, String password, LocalDateTime createdAt) {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.createdAt = LocalDateTime.now();
-    }
-
-    public static User create(String email, String username, String password) {
-        return new User(email, username, password);
+        this.createdAt = createdAt;
     }
 
 }
