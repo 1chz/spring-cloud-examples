@@ -10,7 +10,7 @@ spring:
           predicates:
             - Path=/users/**
 
-        - id: service-catalogs
+        - id: service-catalog
           uri: lb://SERVICE-CATALOG
           predicates:
             - Path=/catalogs/**
