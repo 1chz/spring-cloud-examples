@@ -8,17 +8,59 @@ spring:
         - id: service-user
           uri: lb://SERVICE-USER
           predicates:
+            - Path=/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/(?<segment>.*), /$\{segment}
+
+        - id: service-user
+          uri: lb://SERVICE-USER
+          predicates:
             - Path=/users/**
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
+
+        - id: service-user
+          uri: lb://SERVICE-USER
+          predicates:
+            - Path=/users/**
+          filters:
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
 
         - id: service-catalog
           uri: lb://SERVICE-CATALOG
           predicates:
             - Path=/catalogs/**
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/catalogs(?<segment>.*), /$\{segment}
+
+        - id: service-catalog
+          uri: lb://SERVICE-CATALOG
+          predicates:
+            - Path=/catalogs/**
+          filters:
+            - RewritePath=/catalogs(?<segment>.*), /$\{segment}
 
         - id: service-order
           uri: lb://SERVICE-ORDER
           predicates:
             - Path=/orders/**
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/orders(?<segment>.*), /$\{segment}
+
+        - id: service-order
+          uri: lb://SERVICE-ORDER
+          predicates:
+            - Path=/orders/**
+          filters:
+            - RewritePath=/orders(?<segment>.*), /$\{segment}
 
 eureka:
   client:

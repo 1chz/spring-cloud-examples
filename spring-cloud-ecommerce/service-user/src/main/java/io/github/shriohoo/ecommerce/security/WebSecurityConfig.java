@@ -1,33 +1,41 @@
 package io.github.shriohoo.ecommerce.security;
 
-import org.springframework.context.annotation.Bean;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.shriohoo.ecommerce.user.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final Environment environment;
+    private final ObjectMapper objectMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.headers(header -> {
-            header.frameOptions().disable();
-        });
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
+        http.addFilter(getAuthenticationFilter());
 
-        http.csrf(csrf -> {
-            csrf.disable();
-        });
-
-        http.authorizeHttpRequests(request -> {
-            request.mvcMatchers("/users/**").permitAll();
-        });
+        http.authorizeRequests()
+            .anyRequest().authenticated();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    private AuthenticationFilter getAuthenticationFilter() throws Exception {
+        return new AuthenticationFilter(authenticationManager(), environment, userService, objectMapper);
     }
 
 }

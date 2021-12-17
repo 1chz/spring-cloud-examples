@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/")
 @RequiredArgsConstructor
-@RequestMapping("/orders")
 public class OrderController {
 
     private final OrderCrudService orderCrudService;
