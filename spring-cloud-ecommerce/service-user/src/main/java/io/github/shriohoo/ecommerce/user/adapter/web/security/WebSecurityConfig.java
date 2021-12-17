@@ -1,4 +1,4 @@
-package io.github.shriohoo.ecommerce.security;
+package io.github.shriohoo.ecommerce.user.adapter.web.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.shriohoo.ecommerce.user.service.UserService;

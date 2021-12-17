@@ -1,4 +1,4 @@
-package io.github.shriohoo.ecommerce.security;
+package io.github.shriohoo.ecommerce.user.adapter.web.security;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
