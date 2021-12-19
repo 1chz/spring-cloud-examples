@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/catalogs/")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class CatalogController {
 
     private final CatalogService catalogService;
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<ResponseCatalog>> findAll() {
         return ResponseEntity.ok(
             catalogService.findAll()

@@ -2,16 +2,17 @@ package io.github.shriohoo.ecommerce.user.adapter.persistence;
 
 import io.github.shriohoo.ecommerce.user.domain.User;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserCurdRepository {
 
-    UserEntity save(User user);
+    User save(User user);
 
-    UserEntity findById(Long id);
+    Optional<User> findById(Long id);
 
-    UserEntity findByUsername(String username);
+    Optional<User> findByEmail(String email);
 
-    List<UserEntity> findAll();
+    List<User> findAll();
 
     void delete(User user);
 

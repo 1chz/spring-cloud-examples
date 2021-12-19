@@ -60,6 +60,7 @@ public class UserEntity implements Serializable {
         return User.builder()
             .email(email)
             .username(username)
+            .password(password)
             .createdAt(createdAt)
             .build();
     }

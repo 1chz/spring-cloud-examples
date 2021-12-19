@@ -3,7 +3,7 @@ package io.github.shriohoo.ecommerce.user.adapter.web;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import io.github.shriohoo.ecommerce.user.domain.User;
-import io.github.shriohoo.ecommerce.user.service.UserCrudService;
+import io.github.shriohoo.ecommerce.user.service.UserService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,16 +25,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserCrudService userCrudService;
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<List<ResponseUser>> findAll() {
         return ResponseEntity.ok(
-            userCrudService.findAll()
+            userService.findAll()
                 .stream()
                 .map(ResponseUser::convert)
                 .collect(Collectors.toUnmodifiableList())
@@ -43,12 +43,12 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseUser> find(@PathVariable Long id) {
-        return ResponseEntity.ok(ResponseUser.convert(userCrudService.findById(id)));
+        return ResponseEntity.ok(ResponseUser.convert(userService.findById(id)));
     }
 
     @PostMapping
     public ResponseEntity<ResponseUser> create(@RequestBody RequestUser requestUser) {
-        User user = userCrudService.save(requestUser.toUser());
+        User user = userService.save(requestUser.toUser());
         ResponseUser responseUser = ResponseUser.convert(user);
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(responseUser);
@@ -56,7 +56,7 @@ public class UserController {
 
     @DeleteMapping
     public ResponseEntity<HttpStatus> delete(@RequestBody RequestUser requestUser) {
-        userCrudService.delete(requestUser.toUser());
+        userService.delete(requestUser.toUser());
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

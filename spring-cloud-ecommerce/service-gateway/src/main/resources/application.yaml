@@ -8,17 +8,64 @@ spring:
         - id: service-user
           uri: lb://SERVICE-USER
           predicates:
+            - Path=/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/(?<segment>.*), /$\{segment}
+
+        - id: service-user
+          uri: lb://SERVICE-USER
+          predicates:
             - Path=/users/**
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
+
+        - id: service-user
+          uri: lb://SERVICE-USER
+          predicates:
+            - Path=/users/**
+          filters:
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
+            - JwtAuthorizationFilter
 
         - id: service-catalog
           uri: lb://SERVICE-CATALOG
           predicates:
             - Path=/catalogs/**
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/catalogs(?<segment>.*), /$\{segment}
+            - JwtAuthorizationFilter
+
+        - id: service-catalog
+          uri: lb://SERVICE-CATALOG
+          predicates:
+            - Path=/catalogs/**
+          filters:
+            - RewritePath=/catalogs(?<segment>.*), /$\{segment}
+            - JwtAuthorizationFilter
 
         - id: service-order
           uri: lb://SERVICE-ORDER
           predicates:
             - Path=/orders/**
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/orders(?<segment>.*), /$\{segment}
+            - JwtAuthorizationFilter
+
+        - id: service-order
+          uri: lb://SERVICE-ORDER
+          predicates:
+            - Path=/orders/**
+          filters:
+            - RewritePath=/orders(?<segment>.*), /$\{segment}
+            - JwtAuthorizationFilter
 
 eureka:
   client:
@@ -26,3 +73,6 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
+
+token:
+  secret: jwt_user_token
