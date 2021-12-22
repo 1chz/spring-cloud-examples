@@ -29,9 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.headers().frameOptions().disable();
         http.addFilter(getAuthenticationFilter());
-
-        http.authorizeRequests()
-            .anyRequest().authenticated();
+        http.authorizeRequests().anyRequest().permitAll();
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {

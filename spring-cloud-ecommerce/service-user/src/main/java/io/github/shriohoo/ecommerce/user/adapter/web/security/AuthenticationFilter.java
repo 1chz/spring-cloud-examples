@@ -49,11 +49,14 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        response.addHeader("Authorization", Jwts.builder()
+        String expirationTime = environment.getProperty("token.expiration_time");
+        String secretKey = environment.getProperty("token.secret");
+        String token = Jwts.builder()
             .setSubject(((User) authResult.getPrincipal()).getUsername())
-            .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(environment.getProperty("token.expiration_time"))))
-            .signWith(SignatureAlgorithm.HS512, environment.getProperty("token.secret"))
-            .compact());
+            .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(expirationTime)))
+            .signWith(SignatureAlgorithm.HS512, secretKey)
+            .compact();
+        response.addHeader("Authorization", token);
     }
 
     @Override

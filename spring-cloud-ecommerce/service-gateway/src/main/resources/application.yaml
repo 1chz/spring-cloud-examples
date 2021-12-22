@@ -17,7 +17,7 @@ spring:
         - id: service-user
           uri: lb://SERVICE-USER
           predicates:
-            - Path=/users/**
+            - Path=/users
             - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
@@ -75,4 +75,4 @@ eureka:
       defaultZone: http://127.0.0.1:8761/eureka
 
 token:
-  secret: jwt_user_token
+  secret: secret-key

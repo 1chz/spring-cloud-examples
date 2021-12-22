@@ -30,4 +30,4 @@ eureka:
 
 token:
   expiration_time: 86400000 # 단위: ms | 1일
-  secret: jwt_user_token
+  secret: secret-key

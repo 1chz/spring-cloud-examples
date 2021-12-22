@@ -81,14 +81,9 @@ public class JwtAuthorizationFilter extends AbstractGatewayFilterFactory<JwtAuth
         log.error(errorMessage);
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(httpStatus);
-
-        HttpHeaders headers = response.getHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        return response.writeWith(
-            Flux.just(response.bufferFactory()
-                .wrap(getResponse(Response.of(httpStatus.value(), errorMessage))))
-        );
+        response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        Response body = Response.of(httpStatus.value(), errorMessage);
+        return response.writeWith(Flux.just(response.bufferFactory().wrap(getResponse(body))));
     }
 
     private byte[] getResponse(Response response) {
