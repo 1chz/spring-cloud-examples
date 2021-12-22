@@ -9,7 +9,7 @@ spring:
     config:
       server:
         git:
-          uri: file://D:\git-configuration\spring-cloud-ecommerce
+          uri: https://github.com/shirohoo/spring-cloud-examples.git
           search-paths: spring-cloud-ecommerce
 #          username: your username
 #          password: your password
