@@ -10,9 +10,9 @@ spring:
       settings:
         web-allow-others: true
   datasource:
-      url: jdbc:h2:mem:testdb
-      username: sa
-      password:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
   jpa:
     defer-datasource-initialization: true
     properties:
@@ -20,6 +20,10 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: create-drop
+  cloud:
+    config:
+      uri: http://127.0.0.1:8888
+      name: ecommerce
 
 eureka:
   client:
@@ -27,7 +31,3 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
-
-token:
-  expiration_time: 86400000 # 단위: ms | 1일
-  secret: secret-key
