@@ -12,6 +12,7 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -71,6 +72,7 @@ public class JwtAuthorizationFilter extends AbstractGatewayFilterFactory<JwtAuth
 
         if (!StringUtils.hasText(subject)) {
             // Check if the subject is a valid value by querying the DB (email)
+            return false;
         }
         return true;
     }
@@ -79,14 +81,17 @@ public class JwtAuthorizationFilter extends AbstractGatewayFilterFactory<JwtAuth
         log.error(errorMessage);
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(httpStatus);
+
+        HttpHeaders headers = response.getHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
         return response.writeWith(
             Flux.just(response.bufferFactory()
-                .wrap(getResponse(errorMessage, httpStatus)))
+                .wrap(getResponse(Response.of(httpStatus.value(), errorMessage))))
         );
     }
 
-    private byte[] getResponse(String errorMessage, HttpStatus httpStatus) {
-        Response response = Response.of(httpStatus.value(), errorMessage);
+    private byte[] getResponse(Response response) {
         return getJsonString(response)
             .getBytes(StandardCharsets.UTF_8);
     }
