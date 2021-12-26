@@ -59,10 +59,11 @@ public class JwtAuthorizationFilter extends AbstractGatewayFilterFactory<JwtAuth
     }
 
     private boolean isValid(String jwt) {
+        String secretKey = environment.getProperty("token.secret");
         String subject;
         try {
             subject = Jwts.parser()
-                .setSigningKey(environment.getProperty("token.secret"))
+                .setSigningKey(secretKey)
                 .parseClaimsJws(jwt)
                 .getBody()
                 .getSubject();
