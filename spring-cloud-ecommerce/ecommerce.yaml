@@ -8,9 +8,3 @@ spring:
 token:
   expiration_time: 864000000 # 단위: ms | 1일
   secret: jwt_user_token
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: refresh, health, beans, busrefresh

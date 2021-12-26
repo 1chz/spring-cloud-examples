@@ -5,11 +5,21 @@ spring:
   application:
     name: SERVICE-CONFIG
 
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
   cloud:
     config:
       server:
         git:
           uri: https://github.com/shirohoo/spring-cloud-examples.git
           search-paths: spring-cloud-ecommerce
-#          username: your username
-#          password: your password
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, busrefresh
