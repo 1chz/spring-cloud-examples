@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class User {
-
     private Long id;
     private String name;
     private String username;
@@ -13,5 +12,4 @@ public class User {
     private String phone;
     private String website;
     private Company company;
-
 }

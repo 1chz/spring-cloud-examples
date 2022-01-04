@@ -2,6 +2,7 @@ package io.github.shirohoo.openfeign.client;
 
 import io.github.shirohoo.openfeign.config.CustomErrorDecoder;
 import io.github.shirohoo.openfeign.config.OpenFeignConfig;
+import io.github.shirohoo.openfeign.model.QueryParams;
 import io.github.shirohoo.openfeign.model.form.Album;
 import io.github.shirohoo.openfeign.model.form.Comment;
 import io.github.shirohoo.openfeign.model.form.Photo;
@@ -10,7 +11,9 @@ import io.github.shirohoo.openfeign.model.form.Todo;
 import io.github.shirohoo.openfeign.model.form.User;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
     name = "jsonPlaceHolder",
@@ -21,7 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
     }
 )
 public interface JsonPlaceHolderClient {
-
     @GetMapping("/posts")
     List<Post> getPosts();
 
@@ -40,4 +42,9 @@ public interface JsonPlaceHolderClient {
     @GetMapping("/users")
     List<User> getUsers();
 
+    @GetMapping("/users")
+    List<User> getUsersWithQueryParamsBasic(@RequestParam("param1") String param1, @RequestParam("param2") String param2);
+
+    @GetMapping("/users")
+    List<User> getUsersWithQueryParams(@SpringQueryMap QueryParams queryParams);
 }
