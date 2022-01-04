@@ -35,7 +35,8 @@ public class OpenFeignConfig {
     @Bean
     public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {
-            requestTemplate.query("customHeader", "shirohoo");
+            requestTemplate.header("commonHeader", "shirohoo");
+            requestTemplate.query("commonQueryParam", "shirohoo");
         };
     }
 }
